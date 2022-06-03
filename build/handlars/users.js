@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const users_1 = require("../models/users");
-const jwt_parse_1 = __importDefault(require("../services/jwt_parse"));
 const pagination_1 = __importDefault(require("../services/pagination"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../config/config"));
 const jwt_decode_1 = __importDefault(require("jwt-decode"));
+const send_mail_1 = __importDefault(require("../services/send_mail"));
 const user_obj = new users_1.User();
 const secret = config_1.default.secret;
 //return a json data for all users in database
@@ -21,7 +21,8 @@ async function index(req, res) {
         //convert token to user object
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
-        if (user.role === 'admin') {
+        const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        if (user.role === 'admin' && perrmission) {
             const result = await user_obj.index();
             //if page exist will paginate
             const paginated_result = (0, pagination_1.default)(page, limit, result);
@@ -40,7 +41,8 @@ async function show(req, res) {
         //convert token to user object
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
-        if ((user.slug === slug) || (user.role === 'admin')) {
+        const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        if (perrmission && ((user.slug === slug) || (user.role === 'admin'))) {
             const result = await user_obj.show(slug);
             return res.status(200).json(result); //result
         }
@@ -96,7 +98,8 @@ async function update(req, res) {
         //convert token to user object
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
-        if (user.slug === slug) {
+        const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        if (perrmission && user.slug === slug) {
             const result = await user_obj.update(u.email, u.name, u.slug, u.phone, exist_user === null || exist_user === void 0 ? void 0 : exist_user.getDataValue('slug'));
             const token = jsonwebtoken_1.default.sign({ user: result }, secret);
             return res.status(200).json({ user: result, token: token }); // result, token
@@ -112,8 +115,11 @@ async function delete_(req, res) {
     const token = req.headers.token;
     const slug = req.params.slug;
     try {
-        const user_slug = (0, jwt_parse_1.default)(token).slug;
-        if (user_slug === slug) {
+        //convert token to user object
+        const x = (0, jwt_decode_1.default)(token);
+        const user = JSON.parse(JSON.stringify(x)).user;
+        const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        if (perrmission && user.slug === slug) {
             const result = await user_obj.delete(slug);
             res.status(200).json(result);
         }
@@ -155,11 +161,51 @@ async function approve_user(req, res) {
         //convert token to user object
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
-        if (user.role === 'admin') {
+        const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        if (perrmission && user.role === 'admin') {
             const result = await user_obj.update_from_admin(accepted, status, slug);
             return res.status(200).json({ user: result }); // result
         }
         return res.status(400).json('Not allowed.');
+    }
+    catch (e) {
+        res.status(400).json(`${e}`);
+    }
+}
+//forget password
+async function forget_password(req, res) {
+    const email = req.body.email;
+    try {
+        const slug = email.split('@')[0];
+        const result = await user_obj.show(slug);
+        const status = result === null || result === void 0 ? void 0 : result.getDataValue('status');
+        if (status === 'suspended')
+            return res.status(400).json('user suspended.');
+        const token = jsonwebtoken_1.default.sign({ user: result }, secret);
+        const url = '' + token;
+        //sending mail to email with url
+        const sent = (0, send_mail_1.default)(email, 'Reset password', url);
+        return res.status(200).json('Ckeck your mail.');
+    }
+    catch (e) {
+        res.status(400).json(`${e}`);
+    }
+}
+//reset password
+async function reset_password(req, res) {
+    const token = req.headers.token;
+    const password = req.body.password;
+    try {
+        //convert token to user object
+        const x = (0, jwt_decode_1.default)(token);
+        const user = JSON.parse(JSON.stringify(x)).user;
+        const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        if (perrmission) {
+            const result = await user_obj.reset_password(password, user.slug);
+            const new_token = jsonwebtoken_1.default.sign({ user: result }, secret);
+            return res.status(200).json({ user: result, token: new_token });
+        }
+        return res.status(400).json('login first.');
     }
     catch (e) {
         res.status(400).json(`${e}`);
@@ -173,6 +219,8 @@ function mainRoutes(app) {
     app.patch('/users/:slug', update);
     app.delete('/users/:slug', delete_);
     app.post('/login', login);
+    app.post('/forget_password', forget_password);
+    app.post('/reset_password', reset_password);
     app.post('/approve_user/:slug', approve_user);
 }
 exports.default = mainRoutes;

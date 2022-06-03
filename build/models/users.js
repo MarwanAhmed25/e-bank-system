@@ -6,9 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const database_1 = __importDefault(require("../database"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const accounts_1 = require("./accounts");
 const config_1 = __importDefault(require("../config/config"));
+const random_int_1 = __importDefault(require("../services/random_int"));
 //get the user model
 const user_model = database_1.default.User;
+const account_obj = new accounts_1.Account();
 //class of CRUD operation in user model
 class User {
     //show all rows in the user table
@@ -55,8 +58,8 @@ class User {
     //delete one row in the user table
     async delete(slug) {
         try {
+            await account_obj.delete(slug);
             const result = await user_model.destroy({ where: { slug: slug } });
-            console.log(result);
             return 'deleted';
         }
         catch (e) {
@@ -80,8 +83,25 @@ class User {
     async update_from_admin(accepted, status, slug) {
         try {
             const result = await user_model.update({ accepted, status }, { where: { slug: slug }, returning: true });
-            console.log(result);
+            const obj = JSON.parse(JSON.stringify(result));
+            const id_ = obj[1][0].id;
+            if (accepted && status === 'active') {
+                const num = (0, random_int_1.default)(id_);
+                account_obj.create(slug, num);
+            }
             return 'updated';
+        }
+        catch (e) {
+            throw new Error(`${e}`);
+        }
+    }
+    //add new row in the user table
+    async reset_password(password, slug) {
+        try {
+            //hashin password using round and extra from .env file and password from request.body
+            const hash = bcrypt_1.default.hashSync(password + config_1.default.extra_password, parseInt(config_1.default.password_round));
+            password = hash;
+            return await user_model.update({ password }, { where: { slug: slug }, returning: true });
         }
         catch (e) {
             throw new Error(`${e}`);

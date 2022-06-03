@@ -2,14 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const account = {
-    // forign key with user model
-    user_slug: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            unique: true
-        },
-    },
     accepted: {
         type: sequelize_1.DataTypes.BOOLEAN,
         default: false,
@@ -25,10 +17,10 @@ const account = {
     },
     account_number: {
         type: sequelize_1.DataTypes.STRING,
+        primaryKey: true,
         allowNull: false,
         validate: {
-            unique: true,
-            isNumeric: true
+            isNumeric: true,
         }
     }
 };

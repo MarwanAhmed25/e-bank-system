@@ -1,14 +1,6 @@
 import { DataTypes } from "sequelize";
 
 const account = {
-    // forign key with user model
-    user_slug: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate:{
-            unique:true
-        },
-    },
     accepted: {// 0 means not acceppted, 1 acceppted
         type: DataTypes.BOOLEAN,
         default: false,
@@ -25,10 +17,10 @@ const account = {
     },
     account_number: {
         type: DataTypes.STRING,
+        primaryKey: true,
         allowNull: false,
         validate:{
-            unique: true,
-            isNumeric: true
+            isNumeric: true,
         }
     }
 }

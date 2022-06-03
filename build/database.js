@@ -7,11 +7,24 @@ const sequelize_1 = require("sequelize");
 const user_1 = __importDefault(require("./database_schema/user"));
 const account_1 = __importDefault(require("./database_schema/account"));
 const transfare_operations_1 = __importDefault(require("./database_schema/transfare_operations"));
-const config_1 = __importDefault(require("./config/config"));
-const sequelize = new sequelize_1.Sequelize(config_1.default.DB_URL); // Example for postgres
-const User = sequelize.define('user', user_1.default);
-const Account = sequelize.define('account', account_1.default);
-const Operation = sequelize.define('operation', transfare_operations_1.default);
+//const sequelize = new Sequelize(config.DB_URL_LOCAL as unknown as string) // Example for postgres
+const sequelize = new sequelize_1.Sequelize({
+    dialect: 'postgres',
+    username: 'nowcexnbaevbru',
+    password: 'd798bc7f4fa2e5591aeb98296bf90e0eb80123ba3a8a04772795f9371cb3acfc',
+    host: 'ec2-99-80-170-190.eu-west-1.compute.amazonaws.com',
+    port: 5432,
+    database: 'd4inkvgfkimblv',
+    ssl: true,
+    dialectOptions: {
+        ssl: {
+            rejectUnauthorized: false
+        }
+    }
+});
+const User = sequelize.define('user', user_1.default, { createdAt: false, updatedAt: false });
+const Account = sequelize.define('account', account_1.default, { createdAt: false, updatedAt: false });
+const Operation = sequelize.define('operation', transfare_operations_1.default, { createdAt: false, updatedAt: false });
 User.hasOne(Account);
 Account.belongsTo(User);
 Account.hasMany(Operation);

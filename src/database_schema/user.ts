@@ -44,9 +44,11 @@ const users = {
     },
     slug: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        
+        primaryKey: true,        
+    },
+    id:{
+        type: DataTypes.INTEGER,
+        autoIncrement: true
     }
 }
 

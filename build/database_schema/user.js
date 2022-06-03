@@ -44,8 +44,11 @@ const users = {
     },
     slug: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+        primaryKey: true,
+    },
+    id: {
+        type: sequelize_1.DataTypes.INTEGER,
+        autoIncrement: true
     }
 };
 exports.default = users;

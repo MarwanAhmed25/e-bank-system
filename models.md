@@ -56,3 +56,10 @@ Authrization
 
         if status = suspended
         can't login
+
+
+discuss:
+
+- admin will show all users or pendding only
+- admin will show all accounts, user will show only approved accounts
+- sending mail when user register

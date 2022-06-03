@@ -1,15 +1,7 @@
 import { DataTypes } from "sequelize";
 
 const operations = {
-    my_account_number: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate:{
-            isNumeric: true
-        }
-      
-    },
-    user_account_number: {
+    operation_number: {
         type: DataTypes.STRING,
         allowNull: false,
         validate:{

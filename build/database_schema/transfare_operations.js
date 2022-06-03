@@ -2,14 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const operations = {
-    my_account_number: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            isNumeric: true
-        }
-    },
-    user_account_number: {
+    operation_number: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
         validate: {
