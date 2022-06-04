@@ -49,7 +49,7 @@ Authrization
         can init account
         can login
         can register
-        can make a transfare
+        can make a transfare  
 
         if status = deactive
         can't tranfare

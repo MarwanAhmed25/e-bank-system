@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import user from './database_schema/user';
 import account from './database_schema/account';
-import operation from './database_schema/transfare_operations';
+import logs from './database_schema/logs';
 import config from './config/config';
 import fs from 'fs';
 //const sequelize = new Sequelize(config.DB_URL_LOCAL as unknown as string) // Example for postgres
@@ -25,13 +25,10 @@ dialectOptions: {
 
 const User = sequelize.define('user', user,{createdAt: false, updatedAt:false});
 const Account = sequelize.define('account', account,{createdAt: false, updatedAt:false});
-const Operation = sequelize.define('operation', operation,{createdAt: false, updatedAt:false});
+const Logs = sequelize.define('logs', logs,{createdAt: false, updatedAt:false});
 
 User.hasOne(Account);
 Account.belongsTo(User);
-
-Account.hasMany(Operation);
-Operation.belongsTo(Account);
 
 const create = async()=>{
     try {
@@ -50,7 +47,7 @@ const db = {
   create,
   User,
   Account,
-  Operation
+  Logs
 }
 
 export default db;

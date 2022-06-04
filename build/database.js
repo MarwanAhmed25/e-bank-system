@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const user_1 = __importDefault(require("./database_schema/user"));
 const account_1 = __importDefault(require("./database_schema/account"));
-const transfare_operations_1 = __importDefault(require("./database_schema/transfare_operations"));
+const logs_1 = __importDefault(require("./database_schema/logs"));
 //const sequelize = new Sequelize(config.DB_URL_LOCAL as unknown as string) // Example for postgres
 const sequelize = new sequelize_1.Sequelize({
     dialect: 'postgres',
@@ -24,11 +24,9 @@ const sequelize = new sequelize_1.Sequelize({
 });
 const User = sequelize.define('user', user_1.default, { createdAt: false, updatedAt: false });
 const Account = sequelize.define('account', account_1.default, { createdAt: false, updatedAt: false });
-const Operation = sequelize.define('operation', transfare_operations_1.default, { createdAt: false, updatedAt: false });
+const Logs = sequelize.define('logs', logs_1.default, { createdAt: false, updatedAt: false });
 User.hasOne(Account);
 Account.belongsTo(User);
-Account.hasMany(Operation);
-Operation.belongsTo(Account);
 const create = async () => {
     try {
         await sequelize.authenticate();
@@ -44,6 +42,6 @@ const db = {
     create,
     User,
     Account,
-    Operation
+    Logs
 };
 exports.default = db;

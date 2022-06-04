@@ -1,33 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
-const operations = {
+const logs = {
     operation_number: {
         type: sequelize_1.DataTypes.STRING,
+        primaryKey: true,
         allowNull: false,
         validate: {
-            isNumeric: true
+            isNumeric: true,
         }
     },
-    from_or_to: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        default: false,
+    sender: {
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
-    balance_before: {
-        type: sequelize_1.DataTypes.FLOAT,
-        default: 0,
+    reciver: {
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
-        validate: {
-            min: 0
-        }
     },
-    balance_after: {
+    amount: {
         type: sequelize_1.DataTypes.FLOAT,
-        default: 0,
         allowNull: false,
         validate: {
-            min: 0
+            min: 1
         }
     },
     created_at: {
@@ -35,4 +30,4 @@ const operations = {
         allowNull: false,
     }
 };
-exports.default = operations;
+exports.default = logs;

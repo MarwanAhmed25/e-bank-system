@@ -52,11 +52,6 @@ async function show(req, res) {
         res.status(400).json(`${e}`);
     }
 }
-/**
- * create token
- *
- *
- */
 //create and return a json data for the user in database
 async function create(req, res) {
     const u = req.body;
@@ -119,10 +114,11 @@ async function delete_(req, res) {
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const perrmission = jsonwebtoken_1.default.verify(token, secret);
-        if (perrmission && user.slug === slug) {
+        if (perrmission && user[1][0].slug === slug) {
             const result = await user_obj.delete(slug);
-            res.status(200).json(result);
+            return res.status(200).json(result);
         }
+        return res.status(400).json('not allowed.');
     }
     catch (e) {
         res.status(400).json(`${e}`);
@@ -152,8 +148,11 @@ async function approve_user(req, res) {
     const slug = req.params.slug;
     try {
         const exist_user = await user_obj.show(slug);
+        const exist_status = exist_user === null || exist_user === void 0 ? void 0 : exist_user.getDataValue('status');
+        if (exist_status === 'suspended')
+            return res.status(400).json('user suspended.');
         if (!status) {
-            status = exist_user === null || exist_user === void 0 ? void 0 : exist_user.getDataValue('status');
+            status = exist_status;
         }
         if (!accepted) {
             accepted = exist_user === null || exist_user === void 0 ? void 0 : exist_user.getDataValue('accepted');

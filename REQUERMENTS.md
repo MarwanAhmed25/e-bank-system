@@ -15,7 +15,7 @@
 
         create   --> /users/:slug [post] 
                                 [headers] noo content
-                                [body] {email, password, name[optional], phone}
+                                [body] {email, password, name[optional], phone, role [user, admin]}
 
         update   --> /users/:slug [patch] 
                                 [headers] token -> user
@@ -31,13 +31,13 @@
 
         aprove  --> /approve_user/:slug [post]
                                         [header] token -> admin
-                                        [body] {status [optional], accepted[optional]}
+                                        [body] {status [optional-> [active, deactive, suspended]], accepted[optional-> true or false]}
         
-        forget_password  --> /forget_password [post]
+        forget_password  --> /forget_password [post]            //pendding need front web page
                                         [header] no content
                                         [body] {email}
 
-        reset_password  --> /reset_password [post]
+        reset_password  --> /reset_password [post]              //pendding need front web page
                                         [header] token -> user
                                         [body] {password}
 
@@ -46,14 +46,29 @@
             headers --> token for admin, users
             body --> nothing
 
-        show-> [get] --> '/users/:slug/account' 
+        show-> [get] --> '/users/accounts/:slug' 
             headers --> token for admin, users
             body --> nothing
 
-        update-> [post] --> '/users/:slug/account'
+        update-> [patch] --> '/users/accounts/:slug'
             headers --> token for user
             body --> balance-> number
-            
-        approve-> [post] --> '/users/:slug/approve_account'
+
+        approve-> [post] --> '/users/accounts/:slug/approve_account'
             headers --> token for admin
             body --> accepted ->boolean
+    
+    Logs:
+        index-> [get] --> '/all_logs'
+            headers --> token for admins
+            body --> nothing
+
+        show-> [get] --> '/logs' 
+            headers --> token for user
+            body --> nothing
+
+        create-> [post] --> '/users/:slug/account'
+            headers --> token for user
+            body --> amount-> number, reciver-> account_number, 
+            
+            

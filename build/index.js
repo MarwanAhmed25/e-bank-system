@@ -7,7 +7,9 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const database_1 = __importDefault(require("./database"));
+const logs_1 = __importDefault(require("./handlars/logs"));
 const users_1 = __importDefault(require("./handlars/users"));
+const account_1 = __importDefault(require("./handlars/account"));
 const body_parser_1 = __importDefault(require("body-parser"));
 dotenv_1.default.config();
 //initial port and app
@@ -24,6 +26,11 @@ app.listen(PORT, () => {
     database_1.default.create();
     console.log(`server running on port ${PORT}...`);
 });
+app.get('/', (req, res) => {
+    res.send('hello');
+});
+(0, account_1.default)(app);
 (0, users_1.default)(app);
+(0, logs_1.default)(app);
 //export the app to use when importing the file
 exports.default = app;

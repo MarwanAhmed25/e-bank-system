@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import db from './database';
+import logs_route from './handlars/logs';
 import user_route from './handlars/users';
 import account_route from './handlars/account';
 import bodyParser from 'body-parser';
@@ -31,6 +32,7 @@ app.get('/',(req,res)=>{
 
 account_route(app);
 user_route(app);
+logs_route(app);
  
 //export the app to use when importing the file
 export default app;
