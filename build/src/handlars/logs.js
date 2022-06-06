@@ -25,6 +25,7 @@ async function index(req, res) {
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jsonwebtoken_1.default.verify(token, secret);
+        console.log(user);
         if (permisson && user.role === 'admin') {
             let result = await log_obj.index();
             if (account_number) {
@@ -51,6 +52,7 @@ async function show(req, res) {
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jsonwebtoken_1.default.verify(token, secret);
+        console.log(user);
         if (permisson) {
             const account = await account_obj.show(user.slug);
             const account_number = account === null || account === void 0 ? void 0 : account.getDataValue('account_number');
@@ -72,6 +74,7 @@ async function create(req, res) {
         //convert token to Account object
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
+        console.log(user);
         if (user.status != 'active')
             return res.status(400).json('User not active.');
         const sender = await account_obj.show(user.slug);

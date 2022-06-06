@@ -19,6 +19,8 @@ async function index(req: Request, res: Response) {
         const x = jwtDecode(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token, secret);
+        console.log(user);
+
         if (permisson) {
             let result = await account_obj.index();
 
@@ -50,6 +52,8 @@ async function show(req: Request, res: Response) {
         const x = jwtDecode(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token, secret);
+        console.log(user);
+
         if (permisson && ((user.slug === slug) || (user.role === 'admin'))) {
             const result = await account_obj.show(slug);
             return res.status(200).json(result);//result
@@ -72,6 +76,7 @@ async function update(req: Request, res: Response) {
         const x = jwtDecode(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token, secret);
+        console.log(user);
 
         const account = await account_obj.show(slug);
         const isAccepted = account?.getDataValue('accepted');
@@ -98,6 +103,8 @@ async function approve(req: Request, res: Response) {
         const x = jwtDecode(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const permisson = jwt.verify(token, secret);
+        console.log(user);
+
         if (permisson && user.role === 'admin') {
             const result = await account_obj.approve(accepted, slug);
 

@@ -6,6 +6,8 @@ import logs_route from './handlars/logs';
 import user_route from './handlars/users';
 import account_route from './handlars/account';
 import bodyParser from 'body-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDoc from '../swagger.json'
 dotenv.config();
 
 
@@ -15,10 +17,10 @@ const app = express();
 //usig middel ware cors and body parser
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
+app.use(bodyParser.urlencoded({ 
     extended: true
 }));
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 //configre the server to listen to port and running it
 app.listen(PORT, (): void => {
@@ -29,7 +31,7 @@ app.listen(PORT, (): void => {
 app.get('/',(req,res)=>{
     res.send('hello');
 });
-
+//calling routes of all projects
 account_route(app);
 user_route(app);
 logs_route(app);

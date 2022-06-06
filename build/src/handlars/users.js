@@ -22,6 +22,7 @@ async function index(req, res) {
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        console.log(user);
         if (user.role === 'admin' && perrmission) {
             const result = await user_obj.index();
             //if page exist will paginate
@@ -42,6 +43,7 @@ async function show(req, res) {
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        console.log(user);
         if (perrmission && ((user.slug === slug) || (user.role === 'admin'))) {
             const result = await user_obj.show(slug);
             return res.status(200).json(result); //result
@@ -94,6 +96,7 @@ async function update(req, res) {
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        console.log(user);
         if (perrmission && user.slug === slug) {
             const result = await user_obj.update(u.email, u.name, u.slug, u.phone, exist_user === null || exist_user === void 0 ? void 0 : exist_user.getDataValue('slug'));
             const token = jsonwebtoken_1.default.sign({ user: result }, secret);
@@ -114,7 +117,8 @@ async function delete_(req, res) {
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const perrmission = jsonwebtoken_1.default.verify(token, secret);
-        if (perrmission && user[1][0].slug === slug) {
+        console.log(user);
+        if (perrmission && user.slug === slug) {
             const result = await user_obj.delete(slug);
             return res.status(200).json(result);
         }
@@ -161,6 +165,7 @@ async function approve_user(req, res) {
         const x = (0, jwt_decode_1.default)(token);
         const user = JSON.parse(JSON.stringify(x)).user;
         const perrmission = jsonwebtoken_1.default.verify(token, secret);
+        console.log(user);
         if (perrmission && user.role === 'admin') {
             const result = await user_obj.update_from_admin(accepted, status, slug);
             return res.status(200).json({ user: result }); // result

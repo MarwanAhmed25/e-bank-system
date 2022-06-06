@@ -1,0 +1,160 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "E-bank System API",
+        "description": "E-bank System API",
+        "license": {
+            "name": "Swagger",
+            "url": "https://swagger.io/"
+        }
+    },
+    "host": "localhost:5000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "E-bank System",
+            "description": "API"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "description": "Returns all USERS from the system",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of users.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{slug}": {
+            "get": {
+                "description": "Returns one USER from the system",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return a user object.",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {}
+        }
+    },
+    "definitions": {
+        "User": {
+            "required": [
+                "email",
+                "password",
+                "role",
+                "status",
+                "accepted",
+                "slug",
+                "id"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "accepted": {
+                    "type": "boolean"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "Accounts": {
+            "required": [
+                "account_number",
+                "balance",
+                "accepted"
+            ],
+            "properties": {
+                "balance": {
+                    "type": "integer"
+                },
+                "account_number": {
+                    "type": "string"
+                },
+                "accepted": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "Logs": {
+            "required": [
+                "operation_number",
+                "sender",
+                "reciver",
+                "amount",
+                "created_at"
+            ],
+            "properties": {
+                "operation_number": {
+                    "type": "string"
+                },
+                "sender": {
+                    "type": "string"
+                },
+                "reciver": {
+                    "type": "string"
+                },
+                "amount": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "Date"
+                }
+            }
+        }
+    }
+}
