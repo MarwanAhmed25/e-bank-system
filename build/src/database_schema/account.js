@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const sequelize_1 = require("sequelize");
-const account = {
+var sequelize_1 = require("sequelize");
+var account = {
     accepted: {
+        // 0 means not acceppted, 1 acceppted
         type: sequelize_1.DataTypes.BOOLEAN,
         default: false,
         allowNull: false,
@@ -12,8 +13,8 @@ const account = {
         default: 0,
         allowNull: false,
         validate: {
-            min: 0
-        }
+            min: 0,
+        },
     },
     account_number: {
         type: sequelize_1.DataTypes.STRING,
@@ -21,7 +22,7 @@ const account = {
         allowNull: false,
         validate: {
             isNumeric: true,
-        }
-    }
+        },
+    },
 };
 exports.default = account;

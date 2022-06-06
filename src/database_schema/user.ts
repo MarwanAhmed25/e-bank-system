@@ -1,55 +1,54 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize';
 
 const users = {
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique:true,
-        validate:{
-            isEmail: true,
-        }
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
     },
-    accepted: {
-        type: DataTypes.BOOLEAN,
-        default: false,
+  },
+  accepted: {
+    type: DataTypes.BOOLEAN,
+    default: false,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      min: 8,
     },
-    password: {
-        type: DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            min:8,
-        }
-        
+  },
+  name: {
+    type: DataTypes.STRING,
+  },
+  phone: {
+    type: DataTypes.STRING,
+    validate: {
+      isNumeric: true,
     },
-    name: {
-        type: DataTypes.STRING
+  },
+  status: {
+    type: DataTypes.STRING,
+    validate: {
+      isIn: [['active', 'deactive', 'suspended']],
     },
-    phone: {
-        type: DataTypes.STRING,
-        validate:{
-            isNumeric: true,
-        }
+  },
+  role: {
+    type: DataTypes.STRING,
+    validate: {
+      isIn: [['user', 'admin']],
     },
-    status: {
-        type: DataTypes.STRING,
-        validate:{
-            isIn:[['active', 'deactive', 'suspended']],
-        }
-    },
-    role: {
-        type: DataTypes.STRING,
-        validate:{
-            isIn: [['user', 'admin']],
-        }
-    },
-    slug: {
-        type: DataTypes.STRING,
-        primaryKey: true,        
-    },
-    id:{
-        type: DataTypes.INTEGER,
-        autoIncrement: true
-    }
-}
+  },
+  slug: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+  },
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+  },
+};
 
 export default users;
