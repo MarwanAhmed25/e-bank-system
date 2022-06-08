@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import config from '../config/config';
 import jwtDecode from 'jwt-decode';
 import sending_mail from '../services/send_mail';
+import isValdate from '../services/password_validate';
 
 const user_obj = new User();
 const secret = config.secret as unknown as string;
@@ -60,6 +61,9 @@ async function create(req: Request, res: Response) {
   const u: user = req.body;
 
   try {
+    if(!isValdate(u.password))
+      throw new Error('please enter a password more than 7 character with one capital letter and one symbol at least of [-,*,+,@,$,&].'); 
+    
     u.status = 'active';
     u.slug = u.email.split('@')[0];
     u.accepted = false;

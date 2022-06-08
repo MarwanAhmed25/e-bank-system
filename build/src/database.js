@@ -43,21 +43,24 @@ var sequelize_1 = require("sequelize");
 var user_1 = __importDefault(require("./database_schema/user"));
 var account_1 = __importDefault(require("./database_schema/account"));
 var logs_1 = __importDefault(require("./database_schema/logs"));
-//const sequelize = new Sequelize(config.DB_URL_LOCAL as unknown as string) // Example for postgres
-var sequelize = new sequelize_1.Sequelize({
-    dialect: 'postgres',
-    username: 'nowcexnbaevbru',
-    password: 'd798bc7f4fa2e5591aeb98296bf90e0eb80123ba3a8a04772795f9371cb3acfc',
-    host: 'ec2-99-80-170-190.eu-west-1.compute.amazonaws.com',
-    port: 5432,
-    database: 'd4inkvgfkimblv',
-    ssl: true,
-    dialectOptions: {
-        ssl: {
-            rejectUnauthorized: false
-        }
-    }
+var config_1 = __importDefault(require("./config/config"));
+var sequelize = new sequelize_1.Sequelize(config_1.default.DB_URL_LOCAL); // Example for postgres
+/* const sequelize = new Sequelize({
+dialect:'postgres',
+username:'nowcexnbaevbru',
+password:'d798bc7f4fa2e5591aeb98296bf90e0eb80123ba3a8a04772795f9371cb3acfc',
+host:'ec2-99-80-170-190.eu-west-1.compute.amazonaws.com',
+port:5432,
+database:'d4inkvgfkimblv',
+ssl:true,
+dialectOptions: {
+  ssl: {
+    rejectUnauthorized: false
+}
+}
+
 });
+ */
 var User = sequelize.define('user', user_1.default, { createdAt: false, updatedAt: false });
 var Account = sequelize.define('account', account_1.default, { createdAt: false, updatedAt: false });
 var Logs = sequelize.define('logs', logs_1.default, { createdAt: false, updatedAt: false });

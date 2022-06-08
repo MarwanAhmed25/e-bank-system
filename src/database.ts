@@ -3,7 +3,7 @@ import user from './database_schema/user';
 import account from './database_schema/account';
 import logs from './database_schema/logs';
 import config from './config/config';
-import fs from 'fs';
+
 //const sequelize = new Sequelize(config.DB_URL_LOCAL as unknown as string) // Example for postgres
 
 const sequelize = new Sequelize({
@@ -21,7 +21,7 @@ dialectOptions: {
 } 
 
 }); 
-
+ 
 
 const User = sequelize.define('user', user,{createdAt: false, updatedAt:false});
 const Account = sequelize.define('account', account,{createdAt: false, updatedAt:false});

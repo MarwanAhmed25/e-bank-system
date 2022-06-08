@@ -45,6 +45,7 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var config_1 = __importDefault(require("../config/config"));
 var jwt_decode_1 = __importDefault(require("jwt-decode"));
 var send_mail_1 = __importDefault(require("../services/send_mail"));
+var password_validate_1 = __importDefault(require("../services/password_validate"));
 var user_obj = new users_1.User();
 var secret = config_1.default.secret;
 //return a json data for all users in database
@@ -123,6 +124,8 @@ function create(req, res) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
+                    if (!(0, password_validate_1.default)(u.password))
+                        throw new Error('please enter a password more than 7 character with one capital letter and one symbol at least of [-,*,+,@,$,&].');
                     u.status = 'active';
                     u.slug = u.email.split('@')[0];
                     u.accepted = false;

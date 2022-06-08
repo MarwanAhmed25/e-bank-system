@@ -24,7 +24,10 @@ var logs = {
         type: sequelize_1.DataTypes.FLOAT,
         allowNull: false,
         validate: {
-            min: 1,
+            isValdate: function (v) {
+                if (v < 1)
+                    throw new Error('Amount must be more than 0.');
+            }
         },
     },
     created_at: {

@@ -23,7 +23,10 @@ const logs = {
     type: DataTypes.FLOAT,
     allowNull: false,
     validate: {
-      min: 1,
+      isValdate(v:number){
+        if(v<1)
+          throw new Error('Amount must be more than 0.')
+      }
     },
   },
 

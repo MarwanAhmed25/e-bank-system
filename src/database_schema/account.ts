@@ -12,7 +12,10 @@ const account = {
     default: 0,
     allowNull: false,
     validate: {
-      min: 0,
+      isValidate(v:number){
+        if(v < 0)
+          throw new Error('Balance must be positive integer.')
+      }
     },
   },
   account_number: {
