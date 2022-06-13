@@ -1,6 +1,7 @@
 import db from '../database';
 import bcrypt from 'bcrypt';
 import config from '../config/config';
+import {Op} from 'sequelize';
 
 //get the account model
 const log_model = db.Logs;
