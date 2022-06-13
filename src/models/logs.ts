@@ -22,10 +22,15 @@ export class Log {
       throw new Error(`${e}`);
     }
   }
-  //show one row in the account table
+ //show one row in the account table
   async show(account_number: string) {
     try {
-      return await log_model.findAll({ where: { sender: account_number } });
+      return await log_model.findAll({ where: {
+        [Op.or]: [
+          { sender: account_number },
+          { reciver: account_number }
+        ]
+      } });
     } catch (e) {
       throw new Error(`${e}`);
     }
