@@ -4,10 +4,10 @@ dotenv.config();
 
 const config = {
   //for jwt token
-  secret: process.env.secret,
+  secret: process.env.secret||'marwan',
   //password hashing
-  extra_password: process.env.extra_password,
-  password_round: process.env.password_round,
+  extra_password: process.env.extra_password||'marwan',
+  password_round: process.env.password_round||12,
   //for email
   user_email: process.env.user_email,
   password_email: process.env.user_password,
